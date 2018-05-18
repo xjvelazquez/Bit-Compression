@@ -20,6 +20,7 @@ int main(int argc, char* argv[]){
   vector<int> frequency(256,0);
   HCTree* mytree = new HCTree();
   int charShift = 48;
+  int counter = 0;
   
   // Fills the frequency vector 
   frequency[0] = 0;
@@ -27,6 +28,7 @@ int main(int argc, char* argv[]){
     //cout << "What is symb?: " << symb << endl;
     if (symb != '0'){
       frequency[index] = symb - charShift;
+      counter++;
     }
     else{
       frequency[index] = 0;
@@ -36,8 +38,12 @@ int main(int argc, char* argv[]){
     std:: cout << "symb1: " << symb << endl;
     symb = input.get();
     std:: cout << "symb2: " << symb << endl;
-
   } 
+  
+  // Empty file case
+  if (counter == 0){
+    return 0;
+  }
   /* Checks the frequency vector
   cout << "Checking vector" << endl;
   for (int index = 0; index < frequency.size(); index++){
@@ -54,9 +60,9 @@ int main(int argc, char* argv[]){
  
   int returnVal = 1;
   while (returnVal != 0){
-    returnVal = mytree->decode(input);
-    ofs << (char)returnVal;
-    cout << "ReturnVal: " << returnVal << endl;
+      returnVal = mytree->decode(input);
+      ofs << (char)returnVal;
+      cout << "ReturnVal: " << returnVal << endl;
   }
   
   input.close();

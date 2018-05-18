@@ -22,9 +22,11 @@ int main(int argc, char* argv[]){
 
   // Fills the frequency vector
   while(input.good()){
-    std::cout << "Filling the tree, get: " << symb << endl;
-    freqs[symb] = freqs[symb] + 1;
-    symb = input.get();
+    if (symb != EOF){
+      std::cout << "Filling the tree, get: " << symb << endl;
+      freqs[symb] = freqs[symb] + 1;
+      symb = input.get();
+    }
   }
   input.close();
 
@@ -45,8 +47,11 @@ int main(int argc, char* argv[]){
   input.open(argv[1]);
   symb = input.get();
   while (input.good()){
+   if (symb != EOF){
     tree->encode(symb, ofs);
     symb = input.get();
+   }
+   else {break;}
   }
   input.close();
   ofs.close();

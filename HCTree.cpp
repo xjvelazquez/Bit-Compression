@@ -18,6 +18,7 @@
 void HCTree::build(const vector<int>& freqs){
   // creates the priority queue
   std::priority_queue<HCNode, vector<HCNode*>, HCNodePtrComp> pq;
+  int counter = 0;
   
   std::cout << "Building tree" << endl;
   // Sets all leaf nodes into the leaves vector.
@@ -31,9 +32,14 @@ void HCTree::build(const vector<int>& freqs){
         HCNode* leaf = new HCNode(freqs[index], symb);
         leaves[index] = leaf;
         pq.push(leaf);
+        counter++;
       }
     }
-
+    
+    // Empty file case
+    if (counter == 0){
+      return;
+    }
     while (pq.size() > 1){
       HCNode* first = pq.top();  //Gets the smallest element. 
       pq.pop();
@@ -52,6 +58,7 @@ void HCTree::build(const vector<int>& freqs){
     
     root = pq.top();
     pq.pop();
+
     cout << "root node: " << root->count << endl;
     for (int index = 0; index < leaves.size(); index++){
     if (leaves[index] != 0){
@@ -93,11 +100,11 @@ void HCTree::encode(byte symbol, ofstream& out) const{
   // Loops until code is in stack
   while (tmp != root){
     curr = tmp->p;
-    if (curr->c0 == tmp){
+    if (curr->c0 != NULL && curr->c0 == tmp){
       intStack.push(0);
       std::cout << "Pushing 0 to stack" << endl;
     }
-    if (curr->c1 == tmp){
+    if (curr->c1 != NULL && curr->c1 == tmp){
       intStack.push(1);
       std::cout << "Pushing 1 to stack" << endl;
     }
@@ -120,7 +127,7 @@ void HCTree::encode(byte symbol, ofstream& out) const{
      */
 int HCTree::decode(ifstream& in) const{
   HCNode* curr = root;
-  unsigned char symb; // = in.get();
+  unsigned char symb; 
   std::cout << "Right before decode, symb is: " << symb << endl;
   std::cout << "Decode: ";
   while (in.good()){
