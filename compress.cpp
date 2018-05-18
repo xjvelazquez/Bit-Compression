@@ -51,6 +51,7 @@ int main(int argc, char* argv[]){
   input.close();
   ofs.close();
   
+  delete tree;
 /*
   HCTree* tree = new HCTree();
   vector<int> freqs(256);

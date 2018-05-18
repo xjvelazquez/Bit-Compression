@@ -19,20 +19,21 @@ void HCTree::build(const vector<int>& freqs){
   // creates the priority queue
   std::priority_queue<HCNode, vector<HCNode*>, HCNodePtrComp> pq;
   
+  std::cout << "Building tree" << endl;
   // Sets all leaf nodes into the leaves vector.
     for (int index = 0; index < freqs.size(); index++){
+      std::cout << "Inside tree, index: " << index << endl;
+      std::cout << "inside tree building, leaf nodes, freqs[index]: " << freqs[index] << endl;
+
       if (freqs[index] != 0){
+ 	std::cout << "Inside if case" << endl;
         unsigned char symb = index;
         HCNode* leaf = new HCNode(freqs[index], symb);
         leaves[index] = leaf;
         pq.push(leaf);
       }
     }
-    /*while (!pq.empty()){
-      cout << "Value: " << pq.top()->count << " Symbol: " << pq.top()->symbol << endl;
-      pq.pop();
-    }
- */
+
     while (pq.size() > 1){
       HCNode* first = pq.top();  //Gets the smallest element. 
       pq.pop();
@@ -108,7 +109,6 @@ void HCTree::encode(byte symbol, ofstream& out) const{
     std::cout << "Number written to out: " << intStack.top() << endl;
     intStack.pop();
   }
-  //out.close();
 }
 
 /** Return the symbol coded in the next sequence of bits (represented as 
@@ -120,20 +120,58 @@ void HCTree::encode(byte symbol, ofstream& out) const{
      */
 int HCTree::decode(ifstream& in) const{
   HCNode* curr = root;
-  unsigned char symb = in.get();
+  unsigned char symb; // = in.get();
+  std::cout << "Right before decode, symb is: " << symb << endl;
   std::cout << "Decode: ";
   while (in.good()){
-    if (symb == '0'){
-      curr = curr->c0;
-    }
-    else if (symb == '1'){
-      curr = curr->c1;
-    }
-    std::cout << symb;
     symb = in.get();
+    if (curr->c0 != NULL && curr->c1 != NULL){
+      if (symb == '0'){
+        //std::cout << "Inside if symb = '0'" << endl;
+        curr = curr->c0;
+      }
+      else if (symb == '1'){
+        //std::cout << "Inside if symb = '1'" << endl;
+        curr = curr->c1;
+      }
+    }
+    else{
+      std::cout << "Breaking" << endl;
+      break; // At a leaf node, curr contains symbol
+    }
+    
+    std::cout << symb;
+    //symb = in.get();
   }
+  
+  in.unget();
   std::cout << endl;
   std::cout << "Symbol returned: " << curr->symbol << endl;
   return curr->symbol;
 }
 
+// Destructor
+HCTree::~HCTree(){
+  deleteNode(root);
+}
+
+//Helper function to delete node and free data
+void HCTree::deleteNode(HCNode* root){
+  HCNode* curr = root;
+  
+  if (!curr){
+    return;
+  }
+
+  // If left child exists, recursive call on left
+  if (curr->c0){
+    deleteNode(curr->c0);
+  }
+  // If right child exists, recursive call on right
+  if (curr->c1){
+    deleteNode(curr->c1);
+  }
+  // If left and right are taken care of.
+  delete curr;
+  return;
+}

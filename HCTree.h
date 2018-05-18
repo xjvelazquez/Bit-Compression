@@ -79,6 +79,9 @@ public:
      */
     int decode(ifstream& in) const;
 
+
+    // Helper function to delete nodes
+    void deleteNode(HCNode* root);
 };
 
 #endif // HCTREE_H
