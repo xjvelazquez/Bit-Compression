@@ -129,30 +129,38 @@ int HCTree::decode(ifstream& in) const{
   HCNode* curr = root;
   unsigned char symb; 
   std::cout << "Right before decode, symb is: " << symb << endl;
-  std::cout << "Decode: ";
   while (in.good()){
+    std:: cout << "Peek: " << in.peek() << endl;
+    if (in.peek() == EOF){  
+      std:: cout << "Inside peek!!!" << endl;
+      break;
+    }
     symb = in.get();
     if (curr->c0 != NULL && curr->c1 != NULL){
       if (symb == '0'){
-        //std::cout << "Inside if symb = '0'" << endl;
+        std::cout << "Inside if symb = '0'" << endl;
         curr = curr->c0;
       }
       else if (symb == '1'){
-        //std::cout << "Inside if symb = '1'" << endl;
+        std::cout << "Inside if symb = '1'" << endl;
         curr = curr->c1;
       }
+      else{
+        std::cout << "else" << endl;
+      } 
     }
     else{
       std::cout << "Breaking" << endl;
       break; // At a leaf node, curr contains symbol
     }
     
-    std::cout << symb;
+    std::cout << "Symb: " << symb << endl;
     //symb = in.get();
+    
   }
-  
-  in.unget();
-  std::cout << endl;
+  if (in.peek() != EOF){
+    in.unget();
+  }
   std::cout << "Symbol returned: " << curr->symbol << endl;
   return curr->symbol;
 }
