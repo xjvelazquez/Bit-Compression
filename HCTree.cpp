@@ -1,5 +1,7 @@
 #include "HCTree.h"
 #include "HCNode.h"
+#include "BitOutputStream.h"
+#include "BitInputStream.h"
 #include <queue>
 #include <cstddef>
 #include <vector>
@@ -118,6 +120,56 @@ void HCTree::encode(byte symbol, ofstream& out) const{
   }
 }
 
+
+
+
+/** Write to the given BitOutputStream
+*  the sequence of bits coding the given symbol.
+*  PRECONDITION: build() has been called, to create the coding
+*  tree, and initialize root pointer and leaves vector.
+*/
+void HCTree::encode(byte symbol, BitOutputStream& out) const{
+  HCNode *tmp;
+  HCNode *curr;
+  stack<unsigned int> intStack;
+
+  std::cout << "Symbol we are looking to code: " << symbol << endl;
+
+  // Gets the leaf of corresponding symbol
+  for (int index = 0; index < leaves.size(); index++){
+    if (leaves[index] != 0 && leaves[index]->symbol == symbol){
+      tmp = leaves[index];
+      curr = tmp->p;
+      break;
+    }
+  }
+  
+  std::cout << "tmp's symbol: " << tmp->symbol << endl;
+  // Loops until code is in stack
+  while (tmp != root){
+    curr = tmp->p;
+    if (curr->c0 != NULL && curr->c0 == tmp){
+      intStack.push(0);
+      std::cout << "Pushing 0 to stack" << endl;
+    }
+    if (curr->c1 != NULL && curr->c1 == tmp){
+      intStack.push(1);
+      std::cout << "Pushing 1 to stack" << endl;
+    }
+    tmp = curr;
+  }
+  // Outputs code to buffer.
+  while (!intStack.empty()){
+    out.writeBit(intStack.top());
+    std::cout << "Number written to out: " << intStack.top() << endl;
+    intStack.pop();
+  }
+}
+
+
+
+
+
 /** Return the symbol coded in the next sequence of bits (represented as 
      *  ASCII text) from the ifstream.
      *  PRECONDITION: build() has been called, to create the coding
@@ -164,6 +216,58 @@ int HCTree::decode(ifstream& in) const{
   std::cout << "Symbol returned: " << curr->symbol << endl;
   return curr->symbol;
 }
+
+
+
+/** Return symbol coded in the next sequence of bits from the stream.
+ *  PRECONDITION: build() has been called, to create the coding
+ *  tree, and initialize root pointer and leaves vector.
+ */
+int HCTree::decode(BitInputStream& in) const{
+  
+  HCNode* curr = root;
+  unsigned char symb; 
+  while (true){
+    //std:: cout << "Peek: " << in.peek() << endl;
+    /*if (in.peek() == EOF){  
+      std:: cout << "Inside peek!!!" << endl;
+      break;
+    }
+    */
+    in.fill();
+    symb = in.readBit();
+    if (curr->c0 != NULL && curr->c1 != NULL){
+      if (symb == 0){
+        std::cout << "Inside if symb = '0'" << endl;
+        curr = curr->c0;
+      }
+      else if (symb == 1){
+        std::cout << "Inside if symb = '1'" << endl;
+        curr = curr->c1;
+      }
+      else{
+        std::cout << "else" << endl;
+      } 
+    }
+    else{
+      std::cout << "Breaking" << endl;
+      break; // At a leaf node, curr contains symbol
+    }
+    
+    std::cout << "Symb: " << symb << endl;
+    
+  }
+  //if (in.peek() != EOF){
+  //  in.unget();
+  //}
+  std::cout << "Symbol returned: " << curr->symbol << endl;
+  return curr->symbol;
+
+
+}
+
+
+
 
 // Destructor
 HCTree::~HCTree(){

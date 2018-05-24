@@ -19,7 +19,6 @@ int main(int argc, char* argv[]){
   char symb[256]; //= input.get();
   vector<int> frequency(256,0);
   HCTree* mytree = new HCTree();
-  int charShift = 48;
   int number = 0;
   int counter = 0;
   std::string mystring;
@@ -29,11 +28,12 @@ int main(int argc, char* argv[]){
   //frequency[0] = 0;
   cout << "Filling frequency vector for uncompress" << endl;
   for (int index = 0; index < frequency.size(); index++){
+    
     std::getline(input, mystring);
     number = std::stoi(mystring, &sz);
     cout << "Number: " << number << endl;
     if (number != 0){
-      frequency[index] = number; //- charShift;
+      frequency[index] = number;
       counter++;
     }
     else{
@@ -63,10 +63,12 @@ int main(int argc, char* argv[]){
   //Opens outfile for decoding
   std::ofstream ofs;
   ofs.open(argv[2]);
+  BitInputStream bis(input);
+  
  
   int returnVal = 1;
   while (returnVal != 0){
-      returnVal = mytree->decode(input);
+      returnVal = mytree->decode(bis);
       if (returnVal == 0){
         break;
       }

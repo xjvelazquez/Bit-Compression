@@ -1,5 +1,6 @@
 #include "HCTree.h"
 #include "HCNode.h"
+#include "BitOutputStream.h"
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -36,10 +37,15 @@ int main(int argc, char* argv[]){
   // Opens outfile for encoding
   std::ofstream ofs;
   ofs.open(argv[2]);
+  BitOutputStream bos(ofs);
+
   
+
+
   // Creating the header 
   for (int index = 0; index < freqs.size(); index++){
     ofs << freqs[index];
+    bos.writeBit(freqs[index]);
     ofs << endl;
   }
   
@@ -48,7 +54,7 @@ int main(int argc, char* argv[]){
   symb = input.get();
   while (input.good()){
    if (symb != EOF){
-    tree->encode(symb, ofs);
+    tree->encode(symb, bos);
     symb = input.get();
    }
    else {break;}
