@@ -25,7 +25,7 @@ int main(int argc, char* argv[]){
   // Fills the frequency vector
   while(input.good()){
     if (symb != EOF){
-      std::cout << "Filling the tree, get: " << symb << endl;
+      //std::cout << "Filling the tree, get: " << symb << endl;
       freqs[symb] = freqs[symb] + 1;
       counter++;
       symb = input.get();
@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
   input.open(argv[1],ios::binary);
   symb = input.get();
   while (input.good()){
-   cout << "peek: " << input.peek() << endl;
+   //cout << "peek: " << input.peek() << endl;
    if (symb != EOF){
     tree->encode(symb, bos);
     symb = input.get();

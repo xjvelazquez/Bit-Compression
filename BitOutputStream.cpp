@@ -18,19 +18,19 @@ void BitOutputStream::flush(){
 void BitOutputStream::writeBit(unsigned int bit){
   // flush the bitwise buffer if it is full
   if(nbits == 8) {
-  std::cout << "Inside nbits = 8 in outputstream" << "\n";
+  //std::cout << "Inside nbits = 8 in outputstream" << "\n";
     flush();
   }
   unsigned int copy = 0;
   // set the next open bit of the bitwise buffer to 'bit' (how?)
   copy += bit;
-  std::cout << "this is copy after adding bit: " << copy << "\n";
+  //std::cout << "this is copy after adding bit: " << copy << "\n";
   nbits++;
-  std::cout << "nbits in outstream: " << nbits << "\n";
+  //std::cout << "nbits in outstream: " << nbits << "\n";
   copy = copy << (8-nbits);
-  std::cout << "copy after shifting: " << copy << "\n";
+  //std::cout << "copy after shifting: " << copy << "\n";
   buf += copy;
-  std::cout << "This is buf " << buf << "\n";
+  //std::cout << "This is buf " << buf << "\n";
   // increment the number of bits in our bitwise buffer
 }
 
