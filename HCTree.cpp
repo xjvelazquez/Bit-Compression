@@ -266,10 +266,6 @@ int HCTree::decode(BitInputStream& in) const{
     }
     
   }
-  //if (in.input.peek() != EOF){
-  //  in.input.unget();
-  //}
-  //std::cout << "Symbol returned: " << curr->symbol << endl;
   return curr->symbol;
 
 
