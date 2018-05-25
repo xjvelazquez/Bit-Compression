@@ -161,7 +161,7 @@ void HCTree::encode(byte symbol, BitOutputStream& out) const{
   // Outputs code to buffer.
   while (!intStack.empty()){
     out.writeBit(intStack.top());
-    std::cout << "Number written to out: " << intStack.top() << endl;
+    std::cout << "Number written to buffer: " << intStack.top() << endl;
     intStack.pop();
   }
 }
@@ -226,16 +226,17 @@ int HCTree::decode(ifstream& in) const{
 int HCTree::decode(BitInputStream& in) const{
   
   HCNode* curr = root;
-  unsigned char symb; 
-  while (true){
-    //std:: cout << "Peek: " << in.peek() << endl;
-    /*if (in.peek() == EOF){  
-      std:: cout << "Inside peek!!!" << endl;
+  unsigned int symb = in.readBit(); 
+  while (in.input.good()){
+    //std:: cout << "Peek in decode: " << in.input.peek() << endl;
+    //if (in.input.peek() == EOF){  
+    //  std:: cout << "Inside peek!!!" << endl;
+    //  //break;
+    //}
+    
+    if (symb == EOF){
       break;
     }
-    */
-    in.fill();
-    symb = in.readBit();
     if (curr->c0 != NULL && curr->c1 != NULL){
       if (symb == 0){
         std::cout << "Inside if symb = '0'" << endl;
@@ -249,16 +250,17 @@ int HCTree::decode(BitInputStream& in) const{
         std::cout << "else" << endl;
       } 
     }
-    else{
+    if(curr->c0 == NULL && curr->c1 == NULL){
       std::cout << "Breaking" << endl;
       break; // At a leaf node, curr contains symbol
     }
     
     std::cout << "Symb: " << symb << endl;
+    symb = in.readBit();
     
   }
-  //if (in.peek() != EOF){
-  //  in.unget();
+  //if (in.input.peek() != EOF){
+  //  in.input.unget();
   //}
   std::cout << "Symbol returned: " << curr->symbol << endl;
   return curr->symbol;
@@ -268,11 +270,12 @@ int HCTree::decode(BitInputStream& in) const{
 
 
 
-
 // Destructor
 HCTree::~HCTree(){
   deleteNode(root);
 }
+
+
 
 //Helper function to delete node and free data
 void HCTree::deleteNode(HCNode* root){

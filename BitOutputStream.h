@@ -4,12 +4,11 @@
 #include <fstream>
 
 class BitOutputStream {
-    private:
+    public:
         unsigned char buf; // bitwise buffer (one byte)
         int nbits;         // number of bits that have been written to the bitwise buffer
         std::ofstream & out;     // reference to the bytewise output stream (a C++ ofstream)
 
-    public:
         // constructor: assign 'out' to 'os', 'buf' to 0, and 'nbits' to 0
         BitOutputStream(std::ofstream & os) : out(os), buf(0), nbits(0) {}
 

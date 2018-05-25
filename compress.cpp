@@ -20,12 +20,14 @@ int main(int argc, char* argv[]){
   unsigned char symb = input.get();
   vector<int> freqs(256, 0);
   HCTree* tree = new HCTree();
+  int counter = 0;
 
   // Fills the frequency vector
   while(input.good()){
     if (symb != EOF){
       std::cout << "Filling the tree, get: " << symb << endl;
       freqs[symb] = freqs[symb] + 1;
+      counter++;
       symb = input.get();
     }
   }
@@ -36,62 +38,36 @@ int main(int argc, char* argv[]){
 
   // Opens outfile for encoding
   std::ofstream ofs;
-  ofs.open(argv[2]);
+  ofs.open(argv[2],ios::binary);
   BitOutputStream bos(ofs);
 
-  
-
-
+ 
+  // Puts in the counter before header.
+  //ofs << counter;
+  //ofs << endl;
   // Creating the header 
   for (int index = 0; index < freqs.size(); index++){
     ofs << freqs[index];
-    bos.writeBit(freqs[index]);
+    //bos.writeBit(freqs[index]);
     ofs << endl;
   }
   
   
-  input.open(argv[1]);
+  input.open(argv[1],ios::binary);
   symb = input.get();
   while (input.good()){
+   cout << "peek: " << input.peek() << endl;
    if (symb != EOF){
     tree->encode(symb, bos);
     symb = input.get();
    }
    else {break;}
   }
+  if (bos.nbits != 8){
+    bos.flush();
+  }
   input.close();
   ofs.close();
   
   delete tree;
-/*
-  HCTree* tree = new HCTree();
-  vector<int> freqs(256);
-  freqs[65] = 12;
-  freqs[66] = 17;
-  freqs[67] = 89;
-  freqs[68] = 9;
-  freqs[69] = 12;
-  tree->build(freqs);  
-
-  //std::ofstream ofs ("outfile.txt", std::ofstream::out);
-  std::ofstream ofs;
-  ofs.open("outfile.txt");
-  unsigned char symb = 65;
-  unsigned char symb2 = 66;
-  tree->encode(symb, ofs);
-  tree->encode(symb2, ofs);
-  ofs.close(); 
-
-
-*/
-// decoding 
- /*
-  //std::ifstream in ("outfile.txt", std::ifstream::in);
-  std::ifstream in;
-  in.open("outfile.txt");
-  int yo = tree->decode(in);
-  int yo2 = tree->decode(in);
-  cout << "decoded val: " << yo << endl;
-  cout << "decoded val2: " << yo2 << endl;
-  */
 }

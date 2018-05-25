@@ -21,9 +21,12 @@ int main(int argc, char* argv[]){
   HCTree* mytree = new HCTree();
   int number = 0;
   int counter = 0;
+  int count = 0;
   std::string mystring;
   std::string::size_type sz; 
-  
+ 
+
+  // Get the counter from tree. 
   // Fills the frequency vector 
   //frequency[0] = 0;
   cout << "Filling frequency vector for uncompress" << endl;
@@ -34,17 +37,14 @@ int main(int argc, char* argv[]){
     cout << "Number: " << number << endl;
     if (number != 0){
       frequency[index] = number;
-      counter++;
+      counter += number;
     }
     else{
       frequency[index] = 0;
     }
     std::cout << "index: " << index << endl;
-    //symb = input.get();  // Gets the \n char
-    //std:: cout << "symb1: " << symb << endl;
-    //std:: cout << "symb2: " << symb << endl;
   } 
-  
+   
   // Empty file case
   if (counter == 0){
     return 0;
@@ -62,18 +62,24 @@ int main(int argc, char* argv[]){
 
   //Opens outfile for decoding
   std::ofstream ofs;
-  ofs.open(argv[2]);
+  ofs.open(argv[2],ios::binary);
   BitInputStream bis(input);
   
- 
+  cout << "counter value: " << counter << endl;
   int returnVal = 1;
   while (returnVal != 0){
       returnVal = mytree->decode(bis);
+      count++;
+      cout << "count value: " << count << endl;
+      cout << "returnVal in loop: " << returnVal << endl;
       if (returnVal == 0){
         break;
       }
       ofs << (char)returnVal;
-      cout << "ReturnVal: " << returnVal << endl;
+      if (count == counter){
+        break;
+      }
+      //cout << "ReturnVal: " << returnVal << endl;
   }
   
   input.close();
