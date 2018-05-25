@@ -52,7 +52,12 @@ int main(int argc, char* argv[]){
     cout << "Index in check: " << index << " & freq: " << frequency[index] << endl;
   }*/
   
-  
+  if (counter == 0){
+    std::ofstream yo;
+    yo.open(argv[2], ios::binary);
+    yo.close();
+    return 0;
+  }
   // Constructs the tree
   mytree->build(frequency);
 
