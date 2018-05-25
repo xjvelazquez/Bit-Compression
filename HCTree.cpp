@@ -234,9 +234,13 @@ int HCTree::decode(BitInputStream& in) const{
     //  //break;
     //}
     
+    if (root == NULL){
+      return 0;
+    }
     if (symb == EOF){
       break;
     }
+
     if (curr->c0 != NULL && curr->c1 != NULL){
       if (symb == 0){
         //std::cout << "Inside if symb = '0'" << endl;

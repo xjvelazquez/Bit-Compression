@@ -45,10 +45,6 @@ int main(int argc, char* argv[]){
     //std::cout << "index: " << index << endl;
   } 
    
-  // Empty file case
-  if (counter == 0){
-    return 0;
-  }
   //Checks the frequency vector
   /*
   cout << "Checking vector" << endl;
