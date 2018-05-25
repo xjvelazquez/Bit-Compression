@@ -71,6 +71,9 @@ int main(int argc, char* argv[]){
       if (returnVal == 0){
         break;
       }
+      if (returnVal == EOF){
+        break;
+      }
       ofs << (char)returnVal;
       if (count == counter){
         break;
