@@ -28,6 +28,7 @@ int main(int argc, char* argv[]){
 
   // Get the counter from tree. 
   // Fills the frequency vector 
+  //frequency[0] = 0;
   //cout << "Filling frequency vector for uncompress" << endl;
   for (int index = 0; index < frequency.size(); index++){
     
@@ -50,14 +51,15 @@ int main(int argc, char* argv[]){
   for (int index = 0; index < frequency.size(); index++){
     cout << "Index in check: " << index << " & freq: " << frequency[index] << endl;
   }*/
-  
-  // Empty file case
-  if (counter == 0){
+
+  //Empty file case
+ if (counter == 0){
     std::ofstream yo;
     yo.open(argv[2], ios::binary);
     yo.close();
     return 0;
-  }
+  } 
+  
   // Constructs the tree
   mytree->build(frequency);
 
@@ -68,7 +70,7 @@ int main(int argc, char* argv[]){
   
   //cout << "counter value: " << counter << endl;
   int returnVal = 1;
-  while (bis.input.good()){
+  while (returnVal != 0){
       returnVal = mytree->decode(bis);
       count++;
       //cout << "count value: " << count << endl;
@@ -76,14 +78,8 @@ int main(int argc, char* argv[]){
       if (returnVal == 0){
         break;
       }
-      if (returnVal == EOF){
-        break;
-      }
       ofs << (char)returnVal;
       if (count == counter){
-        break;
-      }
-      if (!bis.input.good()){
         break;
       }
       //cout << "ReturnVal: " << returnVal << endl;
@@ -93,4 +89,5 @@ int main(int argc, char* argv[]){
   ofs.close();
   delete mytree;
 }
+
 

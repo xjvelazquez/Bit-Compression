@@ -60,9 +60,6 @@ int main(int argc, char* argv[]){
    if (symb != EOF){
     tree->encode(symb, bos);
     symb = input.get();
-    if (!input.good()){
-      break;
-    }
    }
    else {break;}
   }
@@ -74,3 +71,4 @@ int main(int argc, char* argv[]){
   
   delete tree;
 }
+

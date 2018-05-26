@@ -21,7 +21,7 @@ void BitOutputStream::writeBit(unsigned int bit){
   //std::cout << "Inside nbits = 8 in outputstream" << "\n";
     flush();
   }
-  unsigned int copy = 0;
+  unsigned char copy = 0;
   // set the next open bit of the bitwise buffer to 'bit' (how?)
   copy += bit;
   //std::cout << "this is copy after adding bit: " << copy << "\n";
