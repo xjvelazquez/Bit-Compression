@@ -29,12 +29,12 @@ int main(int argc, char* argv[]){
   // Get the counter from tree. 
   // Fills the frequency vector 
   //frequency[0] = 0;
-  //cout << "Filling frequency vector for uncompress" << endl;
+  cout << "Filling frequency vector for uncompress" << endl;
   for (int index = 0; index < frequency.size(); index++){
     
     std::getline(input, mystring);
     number = std::stoi(mystring, &sz);
-    //cout << "Number: " << number << endl;
+    cout << "Number: " << number << endl;
     if (number != 0){
       frequency[index] = number;
       counter += number;
@@ -70,19 +70,19 @@ int main(int argc, char* argv[]){
   
   //cout << "counter value: " << counter << endl;
   int returnVal = 1;
-  while (returnVal != 0){
+  while (returnVal != -1){
       returnVal = mytree->decode(bis);
       count++;
-      //cout << "count value: " << count << endl;
-      //cout << "returnVal in loop: " << returnVal << endl;
-      if (returnVal == 0){
+      cout << "count value: " << count << endl;
+      cout << "returnVal in loop: " << returnVal << endl;
+      if (returnVal == -1){
         break;
       }
-      ofs << (char)returnVal;
+      ofs << (unsigned char)returnVal;
       if (count == counter){
         break;
       }
-      //cout << "ReturnVal: " << returnVal << endl;
+      cout << "ReturnVal: " << returnVal << endl;
   }
   
   input.close();

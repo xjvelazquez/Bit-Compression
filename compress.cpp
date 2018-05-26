@@ -56,7 +56,7 @@ int main(int argc, char* argv[]){
   input.open(argv[1],ios::binary);
   symb = input.get();
   while (input.good()){
-   //cout << "peek: " << input.peek() << endl;
+   cout << "peek: " << input.peek() << endl;
    if (symb != EOF){
     tree->encode(symb, bos);
     symb = input.get();

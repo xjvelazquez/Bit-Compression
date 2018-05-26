@@ -25,11 +25,11 @@ void HCTree::build(const vector<int>& freqs){
   std::cout << "Building tree" << endl;
   // Sets all leaf nodes into the leaves vector.
     for (int index = 0; index < freqs.size(); index++){
-      //std::cout << "Inside tree, index: " << index << endl;
-      //std::cout << "inside tree building, leaf nodes, freqs[index]: " << freqs[index] << endl;
+      std::cout << "Inside tree, index: " << index << endl;
+      std::cout << "inside tree building, leaf nodes, freqs[index]: " << freqs[index] << endl;
 
       if (freqs[index] != 0){
- 	//std::cout << "Inside if case" << endl;
+ 	std::cout << "Inside if case" << endl;
         unsigned char symb = index;
         HCNode* leaf = new HCNode(freqs[index], symb);
         leaves[index] = leaf;
@@ -64,9 +64,9 @@ void HCTree::build(const vector<int>& freqs){
     //cout << "root node: " << root->count << endl;
     for (int index = 0; index < leaves.size(); index++){
     if (leaves[index] != 0){
-      //cout << "Node: " << leaves[index]->symbol << " freq: " <<leaves[index]->count << endl;
+      cout << "Node: " << leaves[index]->symbol << " freq: " <<leaves[index]->count << endl;
       if (leaves[index]->p != 0){
-         //cout << "Parent node of: " << leaves[index]->count << " is: " << leaves[index]->p->count << endl;
+         cout << "Parent node of: " << leaves[index]->count << " is: " << leaves[index]->p->count << endl;
       }
     }
     
@@ -144,24 +144,24 @@ void HCTree::encode(byte symbol, BitOutputStream& out) const{
     }
   }
   
-  //std::cout << "tmp's symbol: " << tmp->symbol << endl;
+  std::cout << "tmp's symbol: " << tmp->symbol << endl;
   // Loops until code is in stack
   while (tmp != root){
     curr = tmp->p;
     if (curr->c0 != NULL && curr->c0 == tmp){
       intStack.push(0);
-      //std::cout << "Pushing 0 to stack" << endl;
+      std::cout << "Pushing 0 to stack" << endl;
     }
     if (curr->c1 != NULL && curr->c1 == tmp){
       intStack.push(1);
-      //std::cout << "Pushing 1 to stack" << endl;
+      std::cout << "Pushing 1 to stack" << endl;
     }
     tmp = curr;
   }
   // Outputs code to buffer.
   while (!intStack.empty()){
     out.writeBit(intStack.top());
-    //std::cout << "Number written to buffer: " << intStack.top() << endl;
+    std::cout << "Number written to buffer: " << intStack.top() << endl;
     intStack.pop();
   }
 }
@@ -239,30 +239,30 @@ int HCTree::decode(BitInputStream& in) const{
     }
     if (curr->c0 != NULL && curr->c1 != NULL){
       if (symb == 0){
-        //std::cout << "Inside if symb = '0'" << endl;
+        std::cout << "Inside if symb = '0'" << endl;
         curr = curr->c0;
       }
       else if (symb == 1){
-        //std::cout << "Inside if symb = '1'" << endl;
+        std::cout << "Inside if symb = '1'" << endl;
         curr = curr->c1;
       }
       else{
-        //std::cout << "else" << endl;
+        std::cout << "else" << endl;
       } 
     }
     if(curr->c0 == NULL && curr->c1 == NULL){
-      //std::cout << "Breaking" << endl;
+      std::cout << "Breaking" << endl;
       break; // At a leaf node, curr contains symbol
     }
     
-    //std::cout << "Symb: " << symb << endl;
+    std::cout << "Symb: " << symb << endl;
     symb = in.readBit();
     
   }
   //if (in.input.peek() != EOF){
   //  in.input.unget();
   //}
-  //std::cout << "Symbol returned: " << curr->symbol << endl;
+  std::cout << "Symbol returned: " << curr->symbol << endl;
   return curr->symbol;
 
 
